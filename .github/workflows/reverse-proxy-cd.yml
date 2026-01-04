@@ -35,7 +35,7 @@ jobs:
         run: aws eks update-kubeconfig --name ${CLUSTER_NAME} --region eu-central-1
 
       - name: Deploy Docker Image to Amazon EKS
-        working-directory: udagram-reverse_proxy/k8s
+        working-directory: udagram-reverseproxy/k8s
         env:
           IMAGE_TAG: ${{ github.sha }}
           REPO_NAME: reverse_proxy
