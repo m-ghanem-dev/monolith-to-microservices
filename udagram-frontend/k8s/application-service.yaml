@@ -10,5 +10,5 @@ spec:
   - name: "8080"
     protocol: TCP
     port: 80 # service port
-    targetPort: 8080 # container port
+    targetPort: 80  # container port
     nodePort: 30004 # Port on the node to expose to load balancer. Security group of node must accept traffic on that port from load balancer.
