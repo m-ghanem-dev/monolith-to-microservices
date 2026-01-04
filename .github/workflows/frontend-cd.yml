@@ -17,7 +17,7 @@ jobs:
         REPO_URL: 576165291816.dkr.ecr.eu-central-1.amazonaws.com
         IMAGE_NAME: frontend
         IMAGE_TAG: ${{ github.sha }}
-        CLUSTER_NAME: movie-picture-eks-cluster
+        CLUSTER_NAME: my-eks-cluster
       steps:
       - uses: actions/checkout@v4
     
@@ -35,7 +35,7 @@ jobs:
         run: aws eks update-kubeconfig --name ${CLUSTER_NAME} --region eu-central-1
 
       - name: Deploy Docker Image to Amazon EKS
-        working-directory: frontend/k8s
+        working-directory: udagram-frontend/k8s
         env:
           IMAGE_TAG: ${{ github.sha }}
           REPO_NAME: frontend
