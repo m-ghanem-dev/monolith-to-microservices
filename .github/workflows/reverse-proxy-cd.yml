@@ -15,7 +15,7 @@ jobs:
       runs-on: ubuntu-latest
       env:
         REPO_URL: 576165291816.dkr.ecr.eu-central-1.amazonaws.com
-        IMAGE_NAME: reverse_proxy
+        IMAGE_NAME: reverseproxy
         IMAGE_TAG: ${{ github.sha }}
         CLUSTER_NAME: my-eks-cluster
       steps:
@@ -38,9 +38,9 @@ jobs:
         working-directory: udagram-reverseproxy/k8s
         env:
           IMAGE_TAG: ${{ github.sha }}
-          REPO_NAME: reverse_proxy
+          REPO_NAME: reverseproxy
           REPO_URL: 576165291816.dkr.ecr.eu-central-1.amazonaws.com
-          IMAGE_NAME: reverse_proxy
+          IMAGE_NAME: reverseproxy
         run: |
-          kustomize edit set image reverse_proxy=${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG}
+          kustomize edit set image reverseproxy=${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG}
           kustomize build | kubectl apply -f -

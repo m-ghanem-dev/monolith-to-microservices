@@ -14,7 +14,7 @@ jobs:
     name: Build Docker Image
     env:
       REPO_URL: 576165291816.dkr.ecr.eu-central-1.amazonaws.com
-      IMAGE_NAME: reverse_proxy
+      IMAGE_NAME: reverseproxy
       IMAGE_TAG: ${{ github.sha }}
     
     runs-on: ubuntu-latest
@@ -39,13 +39,13 @@ jobs:
         working-directory: udagram-reverseproxy
         env:
           IMAGE_TAG: ${{ github.sha }}
-          REPO_NAME: reverse_proxy
+          REPO_NAME: reverseproxy
         run: |
           docker build --tag ${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG} .
         
       - name: Deploy Image
         env:
           IMAGE_TAG: ${{ github.sha }}
-          REPO_NAME: reverse_proxy
+          REPO_NAME: reverseproxy
         run: |
             docker push ${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG}
