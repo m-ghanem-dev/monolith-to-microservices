@@ -52,9 +52,14 @@ router.get('/:id',
 router.get('/signed-url/:fileName',
   requireAuth,
   async (req: Request, res: Response) => {
-    const {fileName} = req.params;
-    const url = await AWS.getPutSignedUrl(fileName);
-    res.status(201).send({url: url});
+    try {
+      const {fileName} = req.params;
+      const url = await AWS.getPutSignedUrl(fileName);
+      res.status(201).send({url: url});
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({message: 'Could not generate signed URL', error: error});
+    }
   });
 
 // Create feed with metadata
