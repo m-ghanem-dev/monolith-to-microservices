@@ -48,3 +48,4 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           REPO_NAME: reverse_proxy
         run: |
+            docker push ${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG}
