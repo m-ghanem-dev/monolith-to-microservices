@@ -5,6 +5,7 @@ metadata:
   labels:
     service: reverseproxy
 spec:
+  type: LoadBalancer
   ports:
   - port: 8080
     targetPort: 8080
