@@ -1,4 +1,4 @@
-name: Backend CD
+name: Feed Service CD
 
 on:
   workflow_call:
@@ -15,9 +15,9 @@ jobs:
       runs-on: ubuntu-latest
       env:
         REPO_URL: 576165291816.dkr.ecr.eu-central-1.amazonaws.com
-        IMAGE_NAME: backend
+        IMAGE_NAME: feed
         IMAGE_TAG: ${{ github.sha }}
-        CLUSTER_NAME: movie-picture-eks-cluster
+        CLUSTER_NAME: my-eks-cluster
       steps:
       - uses: actions/checkout@v4
     
@@ -35,12 +35,12 @@ jobs:
         run: aws eks update-kubeconfig --name ${CLUSTER_NAME} --region eu-central-1
 
       - name: Deploy Docker Image to Amazon EKS
-        working-directory: backend/k8s
+        working-directory: udagram-feed/k8s
         env:
           IMAGE_TAG: ${{ github.sha }}
-          REPO_NAME: backend
+          REPO_NAME: feed
           REPO_URL: 576165291816.dkr.ecr.eu-central-1.amazonaws.com
-          IMAGE_NAME: backend
+          IMAGE_NAME: feed
         run: |
-          kustomize edit set image backend=${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG}
+          kustomize edit set image feed=${REPO_URL}/${IMAGE_NAME}:${IMAGE_TAG}
           kustomize build | kubectl apply -f -

@@ -1,0 +1,31 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feed
+  labels:
+    name: feed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: feed
+  template:
+    metadata:
+      labels:
+        service: feed
+    spec:
+      containers:
+      - name: feed
+        image: feed
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: configmap
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secretsmap
+              key: POSTGRES_PASSWORD
+      restartPolicy: Always
