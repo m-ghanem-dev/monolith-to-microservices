@@ -1,0 +1,31 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    name: user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: user
+  template:
+    metadata:
+      labels:
+        service: user
+    spec:
+      containers:
+      - name: user
+        image: user
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: configmap
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secretsmap
+              key: POSTGRES_PASSWORD
+      restartPolicy: Always
