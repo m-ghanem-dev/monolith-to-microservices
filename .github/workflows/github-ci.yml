@@ -16,6 +16,14 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+
+  user-service-cd:
+    uses: ./.github/workflows/user-service-cd.yml
+    needs: user-service-ci
+    secrets:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
   feed-service-ci:
     uses: ./.github/workflows/feed-service-ci.yml
     secrets:
