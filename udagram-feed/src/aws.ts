@@ -8,10 +8,7 @@ import { config } from './config/config';
 const credentials = fromIni({ profile: config.aws_profile });
 
 // Create S3 client
-export const s3Client = new S3Client({
-  region: config.aws_region,
-  credentials: credentials,
-});
+export const s3Client = new S3Client();
 
 // Generates an AWS signed URL for retrieving objects
 export async function getGetSignedUrl(key: string): Promise<string> {
