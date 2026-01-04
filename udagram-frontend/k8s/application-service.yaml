@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: feed
+  name: frontend
 spec:
   type: LoadBalancer
   selector:
-    service: feed
+    service: frontend
   ports:
   - name: "8080"
     protocol: TCP
