@@ -43,6 +43,13 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+  reverse-proxy-cd:
+    uses: ./.github/workflows/reverse-proxy-cd.yml
+    needs: reverse-proxy-ci
+    secrets:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
   frontend-ci:
     uses: ./.github/workflows/frontend-ci.yml
     secrets:
