@@ -6,4 +6,5 @@ resources:
   - configmap.yaml
   - application-service.yaml
   - application-deployment.yaml
+  - hpa-deployment.yaml
 namespace: default
