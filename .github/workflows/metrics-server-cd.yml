@@ -1,0 +1,51 @@
+name: Metrics Server CD
+
+on:
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Metrics Server to EKS
+    runs-on: ubuntu-latest
+    env:
+      CLUSTER_NAME: my-eks-cluster
+      AWS_REGION: eu-central-1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Debug AWS Identity
+        run: aws sts get-caller-identity
+
+      - name: Configure Kubeconfig
+        run: aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${AWS_REGION}
+
+      - name: Apply Metrics Server YAML
+        run: |
+          kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+      - name: Patch Metrics Server for EKS
+        run: |
+          kubectl -n kube-system patch deployment metrics-server \
+          --type='json' \
+          -p='[
+            {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value":"--kubelet-insecure-tls"},
+            {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value":"--kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP"}
+          ]'
+
+      - name: Wait for Metrics Server to be ready
+        run: |
+          kubectl rollout status deployment/metrics-server -n kube-system
+          kubectl get pods -n kube-system | grep metrics-server
